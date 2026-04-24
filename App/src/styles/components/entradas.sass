@@ -1,0 +1,210 @@
+
+@use '../variables'
+
+// ------>            <Entradas/>            < -------
+
+.entradasContainer
+
+    .headerEntradasContainer
+        margin: 0 auto
+        width: 90%
+        height: 9em
+        display: flex
+        flex-direction: row
+        align-items: center
+
+        .topHeaderEntradasContainer
+
+            .textTopHeaderEntradas
+
+                display: flex
+                flex-direction: column
+                justify-content: center
+                align-items: center
+                gap: 1em
+
+                h1
+                    margin: 0 auto
+                    font-size: 1.5rem
+                    width: fit-content
+                    text-align: center
+                    color: #fff
+                    padding: .6em
+                    border-radius: 0px 0px 10px 0px
+                    // box-shadow: variables.$sombra
+
+                p
+                    color: #fff
+
+                input
+                    width: 200px
+                    height: 25px
+                    border-radius: variables.$br
+                    border: none
+                    padding: 1em
+                    text-align: center
+
+        .bottomHeaderEntradasContainer
+
+            width: 100%
+            display: flex
+            justify-content: right
+
+            button
+                display: flex
+                align-items: center
+                justify-content: center
+                font-size: variables.$fmenor
+                width: 160px
+                height: 34px
+                border-radius: variables.$br
+                background-color: green
+                border: none
+                box-shadow: variables.$sombra
+                margin-right: 2em
+                gap: 1em
+                color: #fff
+
+                div
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    width: 24px
+                    height: 24px
+                    font-weight: 800
+                    color: #000
+                    font-size: 1rem
+                    background-color: #fff
+                    padding: .2em
+                    border-radius: 15px
+                    text-align: center
+
+    .cardsEntradasContainer
+        margin-top: 1em
+        height: 26em
+        overflow-y: auto
+
+        &::-webkit-scrollbar
+            width: 10px
+
+        &::-webkit-scrollbar-thumb
+            background-color: rgba(255, 255, 255, 0.2)
+            border-radius: 10px
+
+    .totalEntradasContainer
+        width: 100%
+        // border: 1px solid red
+        text-align: right
+        background-color: #ffffff88
+        padding: .2em
+        h4, p
+            color: #fff
+            padding-right: 2.5em
+            font-size: variables.$fmenor
+
+
+
+
+    // ------>           <CardEntrada/>          <-------
+
+.containerCardEntrada
+    box-sizing: border-box
+    width: 100%
+    height: auto
+    display: flex
+    justify-content: center
+    margin: 0 auto
+    padding: .8em
+
+    .containerCardEntradaInfo
+        background-color: #ffffff88
+        border-radius: 10px 0 0 10px
+        width: 80%
+        height: 110px
+        box-shadow: variables.$sombra
+
+        .containerCardEntradaInfoHeader
+            display: flex
+            flex-direction: row
+            justify-content: space-between
+            align-items: center
+            width: 100%
+            box-sizing: border-box
+            padding: 8px
+            p
+                width: auto
+                font-size: .85rem
+                font-weight: lighter
+                color: #fff
+                background-color: #0B6D29
+                padding: .2em
+                padding-right: .8em
+                padding-left: .8em
+                border-radius: variables.$br
+                box-shadow: variables.$sombraIcones
+
+            .containerEntradaIcons
+                width: 30%
+                display: flex
+                gap: 8px
+
+                button
+                    width: 25px
+                    height: 25px
+                    border: none
+                    border-radius: 3px
+                    color: #fff
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    box-shadow: variables.$sombraIcones
+                    border: 1px solid #ffffffae
+                    cursor: pointer
+
+                >:nth-child(1)
+                    background-color: #0B6D29
+
+                :nth-child(2)
+                    background-color: orange
+
+                :nth-child(3)
+                    background-color: #c93a3a
+
+                img
+                    width: 25px
+                    padding: 4px
+                    // background-color: green
+
+            p
+                text-align: right
+
+        .containerCardEntradaInfoMain
+            padding: 8px
+
+            h5
+                border-bottom: 1px solid #000
+
+            p
+                font-size: .85rem
+                margin-top: .3em
+                font-weight: lighter
+
+    .containerCardEntradaDate
+        box-shadow: variables.$sombra
+        width: 10%
+        height: 110px
+        background-color: #9e800783
+        border-radius: 0 10px 10px 0
+        color: #fff
+        display: flex
+        flex-direction: column
+        justify-content: space-evenly
+        text-align: center
+
+        p
+            font-size: variables.$fmenor
+            font-weight: 600
+
+        :nth-child(3)
+            font-weight: lighter
+            font-style: italic
