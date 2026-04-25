@@ -1,7 +1,28 @@
 
+import { useState, useEffect } from "react"
 import CardEntrada from "../components/CardEntrada"
+import FormAdd from "../components/FormAdd"
 
 const Entradas = () => {
+
+    const [addForm, setAddForm] = useState(false)
+
+    const [entradas, setEntradas] = useState(() => {
+        const entradasSalvas = localStorage.getItem('entradas')
+        return (entradasSalvas) ? JSON.parse(entradasSalvas) : []
+    })
+
+    const addEntrada = (novaEntrada) => {
+        setEntradas([...entradas, novaEntrada])
+    }
+
+    const del = (id) => {
+        setEntradas(prev=> prev.filter(response => response.id !== id))
+    } 
+
+    useEffect(() => {
+        localStorage.setItem('entradas', JSON.stringify(entradas))
+    }, [entradas])
 
     return (
 
@@ -20,7 +41,7 @@ const Entradas = () => {
 
                 <div className="bottomHeaderEntradasContainer">
 
-                    <button>
+                    <button onClick={() => setAddForm(true)}>
                         <div>+</div>
                         Nova Entrada
                     </button>
@@ -31,7 +52,29 @@ const Entradas = () => {
 
             <div className="cardsEntradasContainer">
 
-                <CardEntrada />
+                {addForm === true &&
+                    <FormAdd
+                        fechar={() => setAddForm(false)}
+                        onAdd={addEntrada}
+                    />}
+
+                {
+                    (entradas.length === 0) ?
+                        <p>Nenhuma entrada registrada</p> :
+
+                        entradas.map((entrada, index) => (
+                            <CardEntrada
+                                key={entrada.id}
+                                id={entrada.id}
+                                index={index + 1}
+                                title={entrada.title}
+                                text={entrada.text}
+                                value={entrada.value}
+                                dataEntrada={entrada.date}
+                                onDelete = {del}
+                            />
+                        ))
+                }
 
             </div>
 
