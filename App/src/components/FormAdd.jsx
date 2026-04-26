@@ -1,5 +1,6 @@
 
 import { useState } from 'react'
+import close from '../assets/imgs/close.png'
 
 
 const FormAdd = ({ fechar, onAdd }) => {
@@ -21,15 +22,15 @@ const FormAdd = ({ fechar, onAdd }) => {
             text,
             value,
             date: Date.now()
-            
+
         }
+
         onAdd(novaEntrada)
-        console.log(novaEntrada)
         fechar()
 
     }
 
-        
+
 
     return (
 
@@ -37,9 +38,17 @@ const FormAdd = ({ fechar, onAdd }) => {
 
         <form onSubmit={handleSubmit} className="formAddContainer">
 
+            <div className="formAddContainerTop">
+                <button>
+                    <img src={close} alt="" />
+                </button>
+
+            </div>
+
             <p>Adicionar Entrada</p>
 
             <div className="formAddContainerInfo">
+
 
                 <input
                     type="text"
@@ -60,17 +69,17 @@ const FormAdd = ({ fechar, onAdd }) => {
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                 />
+
             </div>
 
             <div className="formAddContainerButton">
 
                 <button onClick={handleSubmit}>Salvar</button>
-
+                <button onClick={handleSubmit}>Cancelar</button>
 
             </div>
 
-
-        </form>
+        </form >
 
     )
 
