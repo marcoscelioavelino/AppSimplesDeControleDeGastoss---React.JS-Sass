@@ -12,17 +12,25 @@ const Entradas = () => {
         return (entradasSalvas) ? JSON.parse(entradasSalvas) : []
     })
 
+    const totalEntradas = entradas.reduce((somaValores, valorEntrada)=> {
+        return somaValores + Number(valorEntrada.value)
+    },0)
+
+
+
     const addEntrada = (novaEntrada) => {
         setEntradas([...entradas, novaEntrada])
     }
 
     const del = (id) => {
-        setEntradas(prev=> prev.filter(response => response.id !== id))
-    } 
+        setEntradas(prev => prev.filter(response => response.id !== id))
+    }
 
     useEffect(() => {
         localStorage.setItem('entradas', JSON.stringify(entradas))
     }, [entradas])
+
+
 
     return (
 
@@ -43,12 +51,13 @@ const Entradas = () => {
 
                     <button onClick={() => setAddForm(true)}>
                         <div>+</div>
-                        Nova Entrada
+                        Adicionar Entrada
                     </button>
 
                 </div>
 
             </div>
+
 
             <div className="cardsEntradasContainer">
 
@@ -64,15 +73,16 @@ const Entradas = () => {
 
                         entradas.map((entrada, index) => (
                             <CardEntrada
-                                key={entrada.id}
                                 id={entrada.id}
                                 index={index + 1}
                                 title={entrada.title}
                                 text={entrada.text}
                                 value={entrada.value}
                                 dataEntrada={entrada.date}
-                                onDelete = {del}
+                                onDelete={del}
+                                type={entrada}
                             />
+
                         ))
                 }
 
@@ -80,7 +90,7 @@ const Entradas = () => {
 
             <div className="totalEntradasContainer">
                 <h4>Total de entradas:</h4>
-                <p>R$ 100000</p>
+                <p>{totalEntradas} </p>
             </div>
 
         </div>

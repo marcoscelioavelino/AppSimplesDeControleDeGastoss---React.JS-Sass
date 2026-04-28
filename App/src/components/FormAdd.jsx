@@ -39,7 +39,7 @@ const FormAdd = ({ fechar, onAdd }) => {
         <form onSubmit={handleSubmit} className="formAddContainer">
 
             <div className="formAddContainerTop">
-                <button>
+                <button onClick={ ()=> fechar() }>
                     <img src={close} alt="" />
                 </button>
 
@@ -75,7 +75,7 @@ const FormAdd = ({ fechar, onAdd }) => {
             <div className="formAddContainerButton">
 
                 <button onClick={handleSubmit}>Salvar</button>
-                <button onClick={handleSubmit}>Cancelar</button>
+                <button onClick={()=> fechar() }>Cancelar</button>
 
             </div>
 

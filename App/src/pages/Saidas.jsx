@@ -1,6 +1,30 @@
+import { useState, useEffect } from "react"
 import CardEntrada from "../components/CardEntrada"
+import FormAdd from "../components/FormAdd"
 
 const Saidas = () => {
+
+    const [addForm, setAddForm] = useState(false)
+    const [saidas, setSaidas] = useState(() => {
+        const saidasSalvas = localStorage.getItem('saidas')
+        return (saidasSalvas) ? JSON.parse(saidasSalvas) : []
+    })
+
+    const totalSaidas = saidas.reduce((somaSaidas, valor) => {
+        return somaSaidas + Number(valor.value)
+    },0) 
+
+    const addSaida = (novaSaida) => {
+        setSaidas([...saidas, novaSaida])
+    }
+
+    const del = (id) => {
+        setSaidas(prev=> prev.filter(response => response.id !== id))
+    } 
+
+        useEffect(() => {
+        localStorage.setItem('saidas', JSON.stringify(saidas))
+    }, [saidas])
 
     return (
 
@@ -19,9 +43,9 @@ const Saidas = () => {
 
                 <div className="bottomHeaderEntradasContainer">
 
-                    <button>
-                        <div>-</div>
-                        Nova saída
+                    <button className="btAddSaida" onClick={()=> setAddForm(true)}>
+                        <div>+</div>
+                        Adicionar saída
                     </button>
 
                 </div>
@@ -30,13 +54,36 @@ const Saidas = () => {
 
             <div className="cardsEntradasContainer">
 
-                <h1>AQUI É O CARD</h1>
+                {addForm === true &&
+                    <FormAdd
+                        fechar={() => setAddForm(false)}
+                        onAdd={addSaida}
+                    />}
+
+                {
+                    (saidas.length === 0) ?
+                        <p>Nenhuma saída registrada</p> :
+
+                        saidas.map((saida, index) => (
+                            <CardEntrada
+                                id={saida.id}
+                                index={index + 1}
+                                title={saida.title}
+                                text={saida.text}
+                                value={saida.value}
+                                dataEntrada={saida.date}
+                                onDelete={del}
+                                type='saida'
+                            />
+                            
+                        ))
+                }
 
             </div>
 
             <div className="totalEntradasContainer">
                 <h4>Total de saídas:</h4>
-                <p>R$ 100000</p>
+                <p>{totalSaidas}</p>
             </div>
 
         </div>

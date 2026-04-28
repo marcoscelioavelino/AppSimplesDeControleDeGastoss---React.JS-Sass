@@ -5,12 +5,12 @@ import maxIcon from '../assets/imgs/maxIcon.png'
 
 
 
-const CardEntrada = ({ id, title, text, value, dataEntrada, onDelete}) => {
+const CardEntrada = ({ id, title, text, value, dataEntrada, onDelete, type }) => {
 
-        const data = new Date(dataEntrada)
-        const dia = data.toLocaleDateString('pt-BR', {day: '2-digit'})
-        const mes = data.toLocaleDateString('pt-BR', {month: 'long'})
-        const diaSemana = data.toLocaleDateString('pt-BR', {weekday: 'short'})
+    const data = new Date(dataEntrada)
+    const dia = data.toLocaleDateString('pt-BR', { day: '2-digit' })
+    const mes = data.toLocaleDateString('pt-BR', { month: 'long' })
+    const diaSemana = data.toLocaleDateString('pt-BR', { weekday: 'short' })
 
     return (
 
@@ -24,11 +24,12 @@ const CardEntrada = ({ id, title, text, value, dataEntrada, onDelete}) => {
 
                         <button><img src={minIcon} alt="" /></button>
                         <button><img src={editIcon} alt="" /></button>
-                        <button onClick={()=> onDelete(id)}><img src={trashIcon} alt="" /></button>
+                        <button onClick={() => onDelete(id)}><img src={trashIcon} alt="" /></button>
 
                     </div>
 
-                    <p>R$ {value}</p>
+                    <p className={ type === 'saida' ? 'pSaidas' : ''}> {value}</p>
+                   
 
                 </div>
 
