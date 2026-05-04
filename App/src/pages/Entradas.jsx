@@ -1,36 +1,37 @@
-
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import CardEntrada from "../components/CardEntrada"
 import FormAdd from "../components/FormAdd"
 
-const Entradas = () => {
+const Entradas = ({ entradas, setEntradas }) => {
 
+    const [busca, setBusca] = useState('') 
     const [addForm, setAddForm] = useState(false)
+    const [entradaEditada, setEntradaEditada] = useState(null)
 
-    const [entradas, setEntradas] = useState(() => {
-        const entradasSalvas = localStorage.getItem('entradas')
-        return (entradasSalvas) ? JSON.parse(entradasSalvas) : []
-    })
+    const handleEdit = (entrada) => {
+        setEntradaEditada(entrada)
+        setAddForm(true)
+    }
 
-    const totalEntradas = entradas.reduce((somaValores, valorEntrada)=> {
+    const totalEntradas = entradas.reduce((somaValores, valorEntrada) => {
         return somaValores + Number(valorEntrada.value)
-    },0)
-
-
+    }, 0)
 
     const addEntrada = (novaEntrada) => {
-        setEntradas([...entradas, novaEntrada])
+        setEntradas(prev => [...prev, novaEntrada])
+    }
+
+    const editEntrada = (entradaAtualizada) => {
+        setEntradas(prev => prev.map(entrada => entrada.id === entradaAtualizada.id ? entradaAtualizada : entrada))
     }
 
     const del = (id) => {
         setEntradas(prev => prev.filter(response => response.id !== id))
     }
 
-    useEffect(() => {
-        localStorage.setItem('entradas', JSON.stringify(entradas))
-    }, [entradas])
-
-
+    const entradasFiltradas = entradas.filter(entrada => 
+        entrada.title.toLowerCase().includes(busca.toLowerCase())
+    )
 
     return (
 
@@ -42,7 +43,12 @@ const Entradas = () => {
 
                     <div className="textTopHeaderEntradas">
                         <h1>Gerenciamento de entradas</h1>
-                        <input type="text" placeholder="Procurar entrada" />
+                        <input 
+                            type="text" 
+                            placeholder="Procurar entrada" 
+                            value={busca}
+                            onChange={(e)=> setBusca(e.target.value)}
+                        />
                     </div>
 
                 </div>
@@ -58,45 +64,48 @@ const Entradas = () => {
 
             </div>
 
-
             <div className="cardsEntradasContainer">
 
-                {addForm === true &&
+                {addForm &&
                     <FormAdd
-                        fechar={() => setAddForm(false)}
+                        fechar={() => {
+                            setAddForm(false)
+                            setEntradaEditada(null)
+                        }}
                         onAdd={addEntrada}
+                        onEdit={editEntrada}
+                        entrada={entradaEditada}
                     />}
 
-                {
-                    (entradas.length === 0) ?
-                        <p>Nenhuma entrada registrada</p> :
-
-                        entradas.map((entrada, index) => (
-                            <CardEntrada
-                                id={entrada.id}
-                                index={index + 1}
-                                title={entrada.title}
-                                text={entrada.text}
-                                value={entrada.value}
-                                dataEntrada={entrada.date}
-                                onDelete={del}
-                                type={entrada}
-                            />
-
-                        ))
-                }
+                {entradasFiltradas.length === 0 ? (
+                    <p style={{ textAlign: 'center', color:'#fff' }}>
+                        Nenhuma entrada encontrada
+                    </p>
+                ) : (
+                    entradasFiltradas.map((entrada, index) => (
+                        <CardEntrada
+                            key={entrada.id}
+                            id={entrada.id}
+                            index={index + 1}
+                            title={entrada.title}
+                            text={entrada.text}
+                            value={entrada.value}
+                            dataEntrada={entrada.date}
+                            onDelete={del}
+                            onEditClick={() => handleEdit(entrada)}
+                            type={entrada}
+                        />
+                    ))
+                )}
 
             </div>
 
             <div className="totalEntradasContainer">
-                <h4>Total de entradas:</h4>
-                <p>{totalEntradas} </p>
+                <p>Total: <b>R$ {totalEntradas}</b></p>
             </div>
 
         </div>
     )
-
 }
-
 
 export default Entradas

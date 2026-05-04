@@ -1,54 +1,56 @@
-
 import { useState } from 'react'
 import close from '../assets/imgs/close.png'
 
+const FormAdd = ({ fechar, onAdd, onEdit, entrada }) => {
 
-const FormAdd = ({ fechar, onAdd }) => {
-
-    const [title, setTitle] = useState('')
-    const [text, setText] = useState('')
-    const [value, setValue] = useState('')
+    const [title, setTitle] = useState(entrada?.title || '')
+    const [text, setText] = useState(entrada?.text || '')
+    const [value, setValue] = useState(entrada?.value || '')
     const [date, setDate] = useState(Date.now())
-    const [counterEntradas, setCounterEntradas] = useState(0)
-
-
 
     const handleSubmit = (e) => {
         e.preventDefault()
 
-        const novaEntrada = {
-            id: crypto.randomUUID(),
-            title,
-            text,
-            value,
-            date: Date.now()
-
+        if (!title.trim() || !text.trim()) {
+            alert('O título e a descrição são obrigatórios.')
+            return
         }
 
-        onAdd(novaEntrada)
-        fechar()
+        if (!value || isNaN(Number(value))) {
+            alert('O valor deve ser um número válido.')
+            return
+        }
 
+        const novaEntrada = {
+            id: entrada?.id || crypto.randomUUID(),
+            title,
+            text,
+            value: Number(value),
+            date: entrada?.date || Date.now()
+        }
+
+        if (entrada) {
+            onEdit(novaEntrada)
+        } else {
+            onAdd(novaEntrada)
+        }
+
+        fechar()
     }
 
-
-
     return (
-
-        // ENTRADA
 
         <form onSubmit={handleSubmit} className="formAddContainer">
 
             <div className="formAddContainerTop">
-                <button onClick={ ()=> fechar() }>
+                <button type='button' onClick={() => fechar()}>
                     <img src={close} alt="" />
                 </button>
-
             </div>
 
             <p>Adicionar Entrada</p>
 
             <div className="formAddContainerInfo">
-
 
                 <input
                     type="text"
@@ -73,17 +75,13 @@ const FormAdd = ({ fechar, onAdd }) => {
             </div>
 
             <div className="formAddContainerButton">
-
-                <button onClick={handleSubmit}>Salvar</button>
-                <button onClick={()=> fechar() }>Cancelar</button>
-
+                <button type='submit'>Salvar</button>
+                <button type='button' onClick={() => fechar()}>Cancelar</button>
             </div>
 
         </form >
 
     )
-
-
 }
 
 export default FormAdd

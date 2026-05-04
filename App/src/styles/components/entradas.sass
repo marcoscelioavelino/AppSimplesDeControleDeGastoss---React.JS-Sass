@@ -1,7 +1,7 @@
 
 @use '../variables'
 
-// ------>            <Entradas/>       (PÁGINA)     < -------
+// ------>    ENTRADAS E SAÍDAS    <Entradas />    <Saidas />   (PÁGINA)     < -------
 
 .entradasContainer
 
@@ -94,16 +94,96 @@
             background-color: rgba(255, 255, 255, 0.2)
             border-radius: 10px
 
+        &:nth-child(2)
+            text-align: left
+
     .totalEntradasContainer
         width: 100%
-        // border: 1px solid red
-        text-align: right
-        background-color: #ffffff88
         padding: .2em
-        h4, p
+
+        h3, p
+
+            text-align: right
             color: #fff
             padding-right: 2.5em
             font-size: variables.$fmenor
+
+// ------>   BALANÇO GERAL    <Balanço />    (PÁGINA)     < -------
+
+.balancoContainer
+    width: 100%
+    padding: 1em
+    box-sizing: border-box
+ 
+    h2, h4
+        margin-bottom: .8em
+        color: #fff
+
+    .balancoContainerInfo
+        margin: 0
+        padding: 0
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        gap: 1em
+
+        .balancoContainerEntradas,
+        .balancoContainerSaidas
+            width: 100%
+            height: 34vh
+            background-color: #ffffff88
+            border-radius: 10px
+            padding: 1em
+            box-shadow: variables.$sombra
+            display: flex
+            flex-direction: column
+            justify-content: center
+            align-items: center
+
+        ::-webkit-scrollbar
+            width: 10px
+
+        ::-webkit-scrollbar-thumb
+            background-color: rgba(255, 255, 255, 0.2)
+            border-radius: 10px
+
+        .balancoContainerSaldo
+            padding: 0
+            margin: 0
+            text-align: right
+
+    h3
+        margin-bottom: .5em
+
+    p
+        font-size: 1.1rem
+        font-weight: 600
+
+    .cardsEntradasContainer
+        margin-top: .5em
+        max-height: 250px
+        overflow-y: auto
+
+        .balancoContainerEntradas
+            border-left: 6px solid #0B6D29
+
+            p
+                color: #0B6D29
+
+        .balancoContainerSaidas
+            border-left: 6px solid #c93a3a
+
+            p
+                color: #c93a3a
+
+        .balancoContainerSaldo
+            background-color: #9e800783
+            color: #fff
+            text-align: center
+
+            h2
+                margin: 0
 
     // ------>           <CardEntrada/>     (COMPONENTE)     <-------
 
@@ -116,11 +196,14 @@
     margin: 0 auto
     padding: .8em
 
+    .minOuMaxHight
+        height: 70px !important
+
     .containerCardEntradaInfo
         background-color: #ffffff88
         border-radius: 10px 0 0 10px
         width: 80%
-        height: 110px
+        height: auto
         box-shadow: variables.$sombra
 
         .containerCardEntradaInfoHeader
@@ -212,6 +295,9 @@
             font-weight: lighter
             font-style: italic
 
+.minOuMax
+    visibility: hidden
+
 // ------>           <FormAdd/>     (COMPONENTE)     <-------
 
 .formAddContainer
@@ -298,3 +384,4 @@
 
         :nth-child(2)
             background-color: red
+

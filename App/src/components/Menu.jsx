@@ -1,27 +1,21 @@
+import Eye from '../assets/imgs/visibility.png'
 
-
-const Menu = ({ titleMenu, imgCard, infoCardValueMenu, onClick}) => {
-
+const Menu = ({ titleMenu, imgCard, infoCardValueMenu, onClick }) => {
 
     return (
         <div className="menuCard" onClick={onClick}>
 
-            <div className="menuTopCard">
-                <p>{titleMenu}</p>
-            </div>
-
-            <div className="menuCenterCard">
+            <div className="menuImgCard">
                 <img src={imgCard} alt="" className="imgMenu" />
             </div>
 
-            <div className="menuBottomCard">
-                <p>{infoCardValueMenu}</p>
-                <p>R$1000</p>
+            <div className="menuInfoCard">
+                <p><b>{titleMenu}</b></p>
+                <p> <img src={Eye} alt="" /> R$ {infoCardValueMenu}</p>
             </div>
 
         </div>
     )
-
 }
 
 export default Menu

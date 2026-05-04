@@ -19,22 +19,50 @@ const App = () => {
     const realTime = setInterval(() => {
       setDateBR(new Date())
     }, 1000)
-    return () =>
-      clearInterval(realTime)
+    return () => clearInterval(realTime)
   }, [])
 
 
+  const [entradas, setEntradas] = useState(() => {
+    const entradasSalvas = localStorage.getItem('entradas')
+    return entradasSalvas ? JSON.parse(entradasSalvas) : []
+  })
+
+  useEffect(() => {
+    localStorage.setItem('entradas', JSON.stringify(entradas))
+  }, [entradas])
+
+  const totalDeEntradas = entradas.reduce((soma, item) => {
+    return soma + Number(item.value)
+  }, 0)
+
+
+
+  const [saidas, setSaidas] = useState(() => {
+    const saidasSalvas = localStorage.getItem('saidas')
+    return saidasSalvas ? JSON.parse(saidasSalvas) : []
+  })
+
+  useEffect(() => {
+    localStorage.setItem('saidas', JSON.stringify(saidas))
+  }, [saidas])
+
+
+  const totalDeSaidas = saidas.reduce((soma, item) => {
+    return soma + Number(item.value)
+  }, 0)
+
+  // const [saldo, setSaldo] = useState([])
+  const saldo = totalDeEntradas - totalDeSaidas
+
 
   return (
-
     <main>
-
       <div className="appContainer">
 
         <div className="menuContainer">
 
           <p>
-
             {dateBR.toLocaleDateString('pt-BR', {
               weekday: 'short',
               day: '2-digit',
@@ -47,39 +75,53 @@ const App = () => {
           <Menu
             titleMenu='Entradas'
             imgCard={ganhoIcon}
-            infoCardValueMenu='varAcoes'
-            onClick={()=> setPage('Entradas')}
+            infoCardValueMenu={totalDeEntradas}
+            onClick={() => setPage('Entradas')}
           />
 
           <Menu
             titleMenu='Saídas'
             imgCard={despesaIcon}
-            infoCardValueMenu='varAcoes'
-            onClick={()=> setPage('Saidas')}
+            infoCardValueMenu={totalDeSaidas}
+            onClick={() => setPage('Saidas')}
           />
 
           <Menu
             titleMenu='Balanço'
             imgCard={balaçoIcon}
-            infoCardValueMenu='varAcoes'
-            onClick={()=> setPage('Balanco')}
+            infoCardValueMenu={saldo}
+            onClick={() => setPage('Balanco')}
           />
-
-
 
         </div>
 
         <div className="infoContainer">
 
-
           <div className="infoContainerData">
             {page === 'Home' && <Home />}
-            {(page === 'Entradas' && <Entradas />)}
-            {(page === 'Saidas' && <Saidas />)}
-            {(page === 'Balanco' && <Balanco />)}
+
+            {page === 'Entradas' && (
+              <Entradas
+                entradas={entradas}
+                setEntradas={setEntradas}
+              />
+            )}
+
+            {page === 'Saidas' && (
+              <Saidas
+                saidas={saidas}
+                setSaidas={setSaidas}
+              />
+            )}
+
+            {page === 'Balanco' && (
+              <Balanco
+                entradas={entradas}
+                saidas={saidas}
+              />
+            )}
 
           </div>
-
 
         </div>
 
@@ -89,5 +131,3 @@ const App = () => {
 }
 
 export default App
-
-

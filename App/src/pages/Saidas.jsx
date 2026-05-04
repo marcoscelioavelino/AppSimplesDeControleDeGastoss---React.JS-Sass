@@ -1,30 +1,37 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import CardEntrada from "../components/CardEntrada"
 import FormAdd from "../components/FormAdd"
 
-const Saidas = () => {
+const Saidas = ({ saidas, setSaidas }) => {
 
+    const [busca, setBusca] = useState('')
     const [addForm, setAddForm] = useState(false)
-    const [saidas, setSaidas] = useState(() => {
-        const saidasSalvas = localStorage.getItem('saidas')
-        return (saidasSalvas) ? JSON.parse(saidasSalvas) : []
-    })
+    const [saidaEditada, setSaidaEditada] = useState(null)
+
+    const handleEdit = (saida) => {
+        setSaidaEditada(saida)
+        setAddForm(true)
+    }
 
     const totalSaidas = saidas.reduce((somaSaidas, valor) => {
         return somaSaidas + Number(valor.value)
-    },0) 
+    }, 0)
 
     const addSaida = (novaSaida) => {
-        setSaidas([...saidas, novaSaida])
+        setSaidas(prev => [...prev, novaSaida])
+    }
+
+    const editSaida = (saidaAtualizada) => {
+        setSaidas(prev => prev.map(saida => saida.id === saidaAtualizada.id ? saidaAtualizada : saida))
     }
 
     const del = (id) => {
-        setSaidas(prev=> prev.filter(response => response.id !== id))
-    } 
+        setSaidas(prev => prev.filter(response => response.id !== id))
+    }
 
-        useEffect(() => {
-        localStorage.setItem('saidas', JSON.stringify(saidas))
-    }, [saidas])
+    const saidasFiltradas = saidas.filter(saida => 
+        saida.title.toLowerCase().includes(busca.toLowerCase())
+    )
 
     return (
 
@@ -36,14 +43,19 @@ const Saidas = () => {
 
                     <div className="textTopHeaderEntradas">
                         <h1>Gerenciamento de saídas</h1>
-                        <input type="text" placeholder="Procurar saída" />
+                        <input 
+                            type="text" 
+                            placeholder="Procurar saída" 
+                            value={busca}
+                            onChange={(e) => setBusca(e.target.value)}
+                        />
                     </div>
 
                 </div>
 
                 <div className="bottomHeaderEntradasContainer">
 
-                    <button className="btAddSaida" onClick={()=> setAddForm(true)}>
+                    <button className="btAddSaida" onClick={() => setAddForm(true)}>
                         <div>+</div>
                         Adicionar saída
                     </button>
@@ -54,36 +66,42 @@ const Saidas = () => {
 
             <div className="cardsEntradasContainer">
 
-                {addForm === true &&
+                {addForm &&
                     <FormAdd
-                        fechar={() => setAddForm(false)}
+                        fechar={() => {
+                            setAddForm(false)
+                            setSaidaEditada(null)
+                        }}
                         onAdd={addSaida}
+                        onEdit={editSaida}
+                        entrada={saidaEditada}
                     />}
 
-                {
-                    (saidas.length === 0) ?
-                        <p>Nenhuma saída registrada</p> :
-
-                        saidas.map((saida, index) => (
-                            <CardEntrada
-                                id={saida.id}
-                                index={index + 1}
-                                title={saida.title}
-                                text={saida.text}
-                                value={saida.value}
-                                dataEntrada={saida.date}
-                                onDelete={del}
-                                type='saida'
-                            />
-                            
-                        ))
-                }
+                {saidasFiltradas.length === 0 ? (
+                    <p style={{ textAlign: 'center', color:'#fff' }}>
+                        Nenhuma saída encontrada
+                    </p>
+                ) : (
+                    saidasFiltradas.map((saida, index) => (
+                        <CardEntrada
+                            key={saida.id}
+                            id={saida.id}
+                            index={index + 1}
+                            title={saida.title}
+                            text={saida.text}
+                            value={saida.value}
+                            dataEntrada={saida.date}
+                            onDelete={del}
+                            onEditClick={() => handleEdit(saida)}
+                            type='saida'
+                        />
+                    ))
+                )}
 
             </div>
 
             <div className="totalEntradasContainer">
-                <h4>Total de saídas:</h4>
-                <p>{totalSaidas}</p>
+                <p>Total: <b>R$ {totalSaidas}</b></p>
             </div>
 
         </div>
