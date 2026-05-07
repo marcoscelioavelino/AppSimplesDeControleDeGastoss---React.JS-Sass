@@ -1,6 +1,0 @@
-2 telas home: 
-1 vez ? home1(cadastrar) : home2(login)
-
-Transformar infos em json
-
-VALIDACOES HOME
